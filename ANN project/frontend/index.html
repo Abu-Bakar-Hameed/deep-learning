@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Fraud Detection AI Dashboard</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body{
+    min-height:100vh;
+    padding:30px;
+    color:white;
+
+    /* 🌈 Gradient Background */
+    background: linear-gradient(135deg,#0f172a,#1e293b,#0b1220);
+}
+
+/* MAIN CARD */
+.container{
+    max-width:1200px;
+    margin:auto;
+
+    background: rgba(30, 41, 59, 0.75);
+    backdrop-filter: blur(12px);
+
+    padding:30px;
+    border-radius:25px;
+
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+/* TITLE */
+h1{
+    text-align:center;
+    font-size:32px;
+
+    background: linear-gradient(90deg,#38bdf8,#22c55e);
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.subtitle{
+    text-align:center;
+    color:#94a3b8;
+    margin-bottom:25px;
+}
+
+/* METRICS GRID */
+.metrics{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:25px;
+}
+
+/* METRIC CARDS */
+.metric-card{
+    background: rgba(15,23,42,0.8);
+    padding:18px;
+    border-radius:15px;
+    text-align:center;
+
+    border:1px solid rgba(56,189,248,0.2);
+
+    transition:0.3s;
+}
+
+.metric-card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(56,189,248,0.2);
+}
+
+.metric-card h3{
+    color:#38bdf8;
+    margin-bottom:5px;
+}
+
+/* INPUT GRID */
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:12px;
+}
+
+/* INPUTS */
+input{
+    padding:12px;
+    border:none;
+    border-radius:10px;
+
+    background: rgba(51,65,85,0.8);
+    color:white;
+
+    outline:none;
+    transition:0.3s;
+
+    border:1px solid transparent;
+}
+
+input:focus{
+    border:1px solid #38bdf8;
+    box-shadow:0 0 10px rgba(56,189,248,0.3);
+    transform: scale(1.02);
+}
+
+/* BUTTONS */
+.buttons{
+    display:flex;
+    gap:12px;
+    margin-top:20px;
+}
+
+button{
+    flex:1;
+    padding:14px;
+
+    border:none;
+    border-radius:12px;
+
+    font-size:16px;
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+/* BUTTON EFFECTS */
+button:hover{
+    transform: scale(1.05);
+}
+
+.predict{
+    background: linear-gradient(90deg,#22c55e,#16a34a);
+    color:white;
+}
+
+.sample{
+    background: linear-gradient(90deg,#3b82f6,#2563eb);
+    color:white;
+}
+
+.clear{
+    background: linear-gradient(90deg,#ef4444,#dc2626);
+    color:white;
+}
+
+/* RESULT BOX */
+.result{
+    margin-top:25px;
+    padding:25px;
+    border-radius:15px;
+
+    background: rgba(15,23,42,0.85);
+    text-align:center;
+
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+/* RESULT TYPES */
+.fraud{
+    color:#ef4444;
+    font-size:28px;
+    font-weight:bold;
+    text-shadow:0 0 10px rgba(239,68,68,0.5);
+}
+
+.legit{
+    color:#22c55e;
+    font-size:28px;
+    font-weight:bold;
+    text-shadow:0 0 10px rgba(34,197,94,0.4);
+}
+
+/* LOADING */
+.loading{
+    color:#facc15;
+    font-size:18px;
+}
+
+/* RISK BAR */
+.bar{
+    margin-top:15px;
+    height:18px;
+    background:#334155;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.fill{
+    height:100%;
+    width:0%;
+    background: linear-gradient(90deg,#22c55e,#ef4444);
+    transition:0.5s;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .metrics{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .buttons{
+        flex-direction:column;
+    }
+}
+
+button{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.predict{ background:#22c55e; color:white; }
+.sample{ background:#3b82f6; color:white; }
+.clear{ background:#ef4444; color:white; }
+
+/* RESULT */
+.result{
+    margin-top:25px;
+    padding:20px;
+    background:#0f172a;
+    border-radius:10px;
+    text-align:center;
+}
+
+.fraud{ color:#ef4444; font-size:26px; font-weight:bold; }
+.legit{ color:#22c55e; font-size:26px; font-weight:bold; }
+
+.loading{ color:#facc15; }
+
+/* RISK BAR */
+.bar{
+    margin-top:10px;
+    height:18px;
+    background:#334155;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.fill{
+    height:100%;
+    width:0%;
+    background:#22c55e;
+    transition:0.5s;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🚨 Fraud Detection AI</h1>
+<p class="subtitle">AI powered transaction analysis system</p>
+
+<!-- METRICS -->
+<div class="metrics" id="metrics"></div>
+
+<!-- FORM -->
+<div class="form-grid" id="form"></div>
+
+<!-- BUTTONS -->
+<div class="buttons">
+<button class="sample" onclick="fillSample()">Sample</button>
+<button class="clear" onclick="clearForm()">Clear</button>
+<button class="predict" onclick="predict()">Predict</button>
+</div>
+
+<!-- RESULT -->
+<div class="result" id="result">
+Prediction will appear here
+</div>
+
+<!-- RISK BAR -->
+<div class="bar">
+<div class="fill" id="bar"></div>
+</div>
+
+</div>
+
+<script>
+
+// ================= FEATURES =================
+const features = [
+"Time","V1","V2","V3","V4","V5","V6","V7","V8","V9",
+"V10","V11","V12","V13","V14","V15","V16","V17","V18","V19",
+"V20","V21","V22","V23","V24","V25","V26","V27","V28","Amount"
+];
+
+// ================= CREATE INPUTS =================
+const form = document.getElementById("form");
+
+features.forEach((f,i)=>{
+form.innerHTML += `<input id="f${i}" placeholder="${f}">`;
+});
+
+// ================= LOAD METRICS =================
+async function loadMetrics(){
+
+try{
+const res = await fetch("http://127.0.0.1:8000/metrics");
+const data = await res.json();
+
+document.getElementById("metrics").innerHTML = `
+<div class="metric-card"><h3>Accuracy</h3>${(data.accuracy*100).toFixed(2)}%</div>
+<div class="metric-card"><h3>Precision</h3>${(data.precision*100).toFixed(2)}%</div>
+<div class="metric-card"><h3>Recall</h3>${(data.recall*100).toFixed(2)}%</div>
+<div class="metric-card"><h3>F1 Score</h3>${(data.f1_score*100).toFixed(2)}%</div>
+`;
+
+}catch(e){
+console.log("Metrics error",e);
+}
+
+}
+
+// ================= CLEAR FORM =================
+function clearForm(){
+for(let i=0;i<30;i++){
+document.getElementById("f"+i).value="";
+}
+}
+
+// ================= SAMPLE DATA =================
+function fillSample(){
+
+const sample = [
+121958,-2.2,-1.3,-0.4,-0.3,0.2,0.9,1.2,-1.7,-2.5,
+-2.1,-0.11,2.6,0.31,-0.28,-0.05,-0.26,0.42,0.33,0.15,
+-0.47,-0.55,0.59,0.15,-0.23,1.74,0.74,0.82,-0.81,52.9
+];
+
+sample.forEach((v,i)=>{
+document.getElementById("f"+i).value = v;
+});
+
+}
+
+// ================= PREDICT =================
+async function predict(){
+
+let data=[];
+
+for(let i=0;i<30;i++){
+data.push(parseFloat(document.getElementById("f"+i).value||0));
+}
+
+document.getElementById("result").innerHTML = "⏳ Predicting...";
+
+const res = await fetch("http://127.0.0.1:8000/predict",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({features:data})
+});
+
+const result = await res.json();
+
+let risk = result.fraud_probability*100;
+
+document.getElementById("bar").style.width = risk+"%";
+document.getElementById("bar").style.background = risk>50?"#ef4444":"#22c55e";
+
+document.getElementById("result").innerHTML = `
+<div class="${result.prediction.includes("Fraud")?"fraud":"legit"}">
+${result.prediction}
+</div>
+<div>Risk: ${risk.toFixed(2)}%</div>
+`;
+
+}
+
+loadMetrics();
+
+</script>
+
+</body>
+</html>

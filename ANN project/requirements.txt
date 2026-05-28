@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+numpy
+pydantic
+pandas
+scikit-learn
+tensorflow
+joblib
+matplotlib
+seaborn
